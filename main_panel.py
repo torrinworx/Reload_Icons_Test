@@ -13,4 +13,5 @@ class MainPanel(bpy.types.Panel):
         scene = context.scene
 
         row = layout.row()
-        my_icon = custom_icons["BAR_CHART_CDG"]  # How do I get 'custom_icons' in this file?
+        row.label("Hello World!", icon_value=custom_icons["BAR_CHART_CDG"].icon_id)
+        # ^^ How do I get 'custom_icons' in this file?
