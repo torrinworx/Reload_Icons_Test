@@ -1,13 +1,11 @@
 bl_info = {
-    "name": "Cozy Data Grapher",
+    "name": "Reload_Icons_Test",
     "author": "Torrin Leonard, This Cozy Studio Inc.",
     "version": (0, 0, 1),
     "blender": (3, 3, 1),
     "location": "View3D",
-    "description": "A Blender add-on that makes graphing and animating json and csv data easy.",
+    "description": "",
     "support": "COMMUNITY",
-    "doc_url": "https://github.com/torrinworx/Cozy-Data-Grapher",
-    "tracker_url": "https://github.com/torrinworx/Cozy-Data-Grapher/issues/new",
     "category": "Development",
 }
 
