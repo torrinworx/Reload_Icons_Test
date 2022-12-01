@@ -9,47 +9,70 @@ bl_info = {
     "category": "Development",
 }
 
+# #cbcbcb
+
 # Blender Modules
 import bpy
 
 # Python Modules
 import os
+import sys
 import importlib
 
-# Local Modules
-import main_panel
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
-# Refresh Local Modules For Development
+# Local Imports
+import icon_manager
+
+# Refresh Locals for development:
 if "bpy" in locals():
     modules = {
-        "main_panel": main_panel,
+        "icon_manager": icon_manager,
     }
 
     for i in modules:
         if i in locals():
             importlib.reload(modules[i])
 
-# Local Imports
-from .main_panel import MainPanel
+from .icon_manager import IconManager
+
+icon_manager = IconManager()
+
+
+class MainPanel(bpy.types.Panel):
+    bl_idname = "reload_icons_test.main_panel"
+    bl_label = "Main Panel"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = 'Reload Icons Test'
+
+    def draw_header(self, context):
+        layout = self.layout
+        layout.template_icon(icon_value=icon_manager.get_icon_id('BAR_CHART_CDG'))
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+
+        row = layout.row()
+        row.label(text="Hello World!", icon="INFO")
+
+        row = layout.row()
+        row.label(text="Hello World!", icon_value=icon_manager.get_icon('PIE_CHART_CDG').icon_id)
+
+        # ^^ How do I get 'custom_icons' in this file?
 
 
 classes = (
     MainPanel,
 )
 
-custom_icons = None
-
 
 def register():
-    # Custom Icons
-    global custom_icons
-    custom_icons = bpy.utils.previews.new()
-    icons_dir = os.path.join(os.path.dirname(__file__), '../icons')
+    # icons_dir = bpy.path.abspath(os.path.join(os.path.dirname(__file__), 'icons'))
 
-    for icon in os.listdir(icons_dir):
-        name, extension = os.path.splitext(os.path.basename(icon))
-        if extension == ".png":
-            custom_icons.load(name, icon, 'IMAGE')
+    # Custom Icons
+    icon_manager.load_icons()
 
     # Classes
     for cls in classes:
@@ -58,8 +81,7 @@ def register():
 
 def unregister():
     # Custom Icons
-    global custom_icons
-    bpy.utils.previews.remove(custom_icons)
+    icon_manager.remove_icons()
 
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)

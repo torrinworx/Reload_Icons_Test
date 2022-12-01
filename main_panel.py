@@ -1,4 +1,5 @@
 import bpy
+from icon_manager import IconManager
 
 
 class MainPanel(bpy.types.Panel):
@@ -8,10 +9,18 @@ class MainPanel(bpy.types.Panel):
     bl_region_type = 'UI'
     bl_category = 'Reload Icons Test'
 
+    icon_manager = IconManager()
+
+    def draw_header(self, context):
+        layout = self.layout
+        layout.template_icon(icon_value=self.icon_manager.get_icon_id('BAR_CHART_CDG'))
+
     def draw(self, context):
         layout = self.layout
         scene = context.scene
 
         row = layout.row()
-        row.label("Hello World!", icon_value=custom_icons["BAR_CHART_CDG"].icon_id)
-        # ^^ How do I get 'custom_icons' in this file?
+        row.label(text="Hello World!", icon="INFO")
+
+        row = layout.row()
+        row.label(text="Hello World!", icon_value=self.icon_manager.get_icon_id('PIE_CHART_CDG'))
